@@ -8,7 +8,7 @@ export default function NavbarComponent() {
     return (
         <Navbar bg="light" expand="lg">
             <Container>
-                <Navbar.Brand href="/">Delivery</Navbar.Brand>
+                <Navbar.Brand href="/"><b>Delivery</b></Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse className='justify-content-end'>
                     <Form className='d-flex'>
