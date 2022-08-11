@@ -13,9 +13,16 @@ def category_view(request):
 
 @api_view(['GET'])
 def restaurant_view(request):
-    queryset = Restaurant.objects.all() 
+    category = request.query_params.get('category')
+    if (category == 'null'):
+        queryset = Restaurant.objects.all() 
+    else:
+        queryset = Restaurant.objects.filter(category=category)
+
     serializer = RestaurantSerializer(queryset, many=True)
     return Response(serializer.data)
+    
+    
 
 # TODO: Restaurants view
 # request.query_params.get('count')

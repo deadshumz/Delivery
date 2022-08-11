@@ -13,14 +13,17 @@ export default function Home() {
 
     const [restaurants, setRestaurants] = useState(false)
     const [categories, setCategories] = useState(false)
+    const [selectedCategory, setSelectedCategory] = useState("0")
 
     // Get Restaurants
     useEffect(() => {
-        const url = `${API_URL}/api/restaurant`
+        const searchParams = new URLSearchParams(window.location.search);
+        const url = `${API_URL}/api/restaurant?category=${searchParams.get('category')}`
         axios.get(url).then(response => {
             setRestaurants(response.data)
         })
     }, [])
+
 
     // Get Categories
     useEffect(() => {
@@ -31,16 +34,28 @@ export default function Home() {
     }, [])
 
 
+    function selectChange(category_id) {
+        const searchParams = new URLSearchParams(window.location.search);
+        if (category_id === "0") {
+            searchParams.delete('category')
+        } else if (searchParams.has('category')) {
+            searchParams.set('category', category_id)
+            setSelectedCategory(category_id)
+        } else {
+            searchParams.set('category', category_id)
+            setSelectedCategory(category_id)
+        }
+        window.location.search = searchParams
+    }
+
+
     return (
-        <Container className='mt-5'>
-            <Row>
-                <Col xxl="10">
-                    {restaurants && categories && <RestaurantList restaurants={restaurants} categories={categories} />}
-                </Col>
-                <Col xxl="2">
-                    {categories && <CategoryList categories={categories}/>}
-                </Col>
-            </Row>
+        <Container fluid className='mt-5 px-5'>
+            <h1>Restaurants</h1>
+            <Col md="2">
+                {categories && <CategoryList categories={categories} change={selectChange} currentCategory={selectedCategory}/>}
+            </Col>
+            {restaurants && categories && <RestaurantList restaurants={restaurants} categories={categories} />}
         </Container>
     )
 }

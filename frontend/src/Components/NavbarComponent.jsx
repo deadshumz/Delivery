@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 export default function NavbarComponent() {
     return (
         <Navbar bg="light" expand="lg">
-            <Container>
+            <Container fluid className='px-5'>
                 <Navbar.Brand href="/"><b>Delivery</b></Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse className='justify-content-end'>

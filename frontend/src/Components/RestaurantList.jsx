@@ -4,12 +4,9 @@ import Col from 'react-bootstrap/Col'
 
 export default function RestaurantList(props) {
 
-    console.log(props)
-    
     return (
         <>
-            <h1>Restaurants</h1>
-            <Row>
+            <Row className='px-2'>
                 {props.restaurants.map(restaurant => {
 
                     let restaurant_category = null
@@ -21,7 +18,7 @@ export default function RestaurantList(props) {
                     }
 
                     return(
-                        <Col className='p-1'>
+                        <Col key={restaurant.id} md="6" xl="4" xxl="3" className='p-1'>
                             <div className='border rounded p-3'>
                                 <h2>{restaurant.name}</h2>
                                 <p>Category: {restaurant_category}</p>
