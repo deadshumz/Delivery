@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status 
 from .models import *
 from .serializers import *
 # Create your views here.
@@ -12,18 +13,21 @@ def category_view(request):
 
 
 @api_view(['GET'])
-def restaurant_view(request):
+def restaurant_list(request):
     category = request.query_params.get('category')
-    if (category == 'null'):
-        queryset = Restaurant.objects.all() 
-    else:
+    try:
+        category = int(category)
         queryset = Restaurant.objects.filter(category=category)
+    except:
+        queryset = Restaurant.objects.all()
 
-    serializer = RestaurantSerializer(queryset, many=True)
+    serializer = RestaurantSerializer(queryset, many=True, context={'request' : request})
     return Response(serializer.data)
-    
-    
 
-# TODO: Restaurants view
-# request.query_params.get('count')
-# [((count // 32) - 1):count] - first 32 restaurants
+@api_view(['GET'])
+def restaurant_by_id(request,id):
+    restaurant_id = request.query_params.get('id')
+    print(restaurant_id,id)
+    queryset = Restaurant.objects.filter(id=id)
+    serializer = RestaurantSerializer(queryset, many=True, context={'request' : request})
+    return Response(serializer.data)

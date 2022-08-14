@@ -6,10 +6,8 @@ import axios from 'axios'
 import CategoryList from './Components/CategoryList'
 import RestaurantList from './Components/RestaurantList';
 
-const API_URL = 'http://localhost:8000'
 
-
-export default function Home() {
+export default function Home({API_URL}) {
 
     const [restaurants, setRestaurants] = useState(false)
     const [categories, setCategories] = useState(false)
@@ -18,7 +16,7 @@ export default function Home() {
     // Get Restaurants
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
-        const url = `${API_URL}/api/restaurant?category=${searchParams.get('category')}`
+        const url = `${API_URL}/api/restaurant_list?category=${searchParams.get('category')}`
         axios.get(url).then(response => {
             setRestaurants(response.data)
         })
