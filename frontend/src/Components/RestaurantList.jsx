@@ -23,7 +23,7 @@ export default function RestaurantList(props) {
                         <Col key={restaurant.id} md="6" xl="4" xxl="3" className={`p-1`}>
                             <Link to={`restaurant/${restaurant.id}`} className={`${styles.linkbox} px-0 display-block`}>
                                 <div className={`${styles.restaurant} d-flex flex-column`}>
-                                    <div className={styles.restaurantimage} style={{ backgroundImage : `url(${restaurant.image})` }}>
+                                    <div className={styles.restaurantimage} style={{ backgroundImage : `url(${props.API_URL}${restaurant.image})` }}>
                                     </div>
                                     <div className='p-3'>
                                         <h2 className={styles.title}>{restaurant.name}</h2>

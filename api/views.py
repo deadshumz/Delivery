@@ -21,13 +21,13 @@ def restaurant_list(request):
     except:
         queryset = Restaurant.objects.all()
 
-    serializer = RestaurantSerializer(queryset, many=True, context={'request' : request})
+    serializer = RestaurantSerializer(queryset, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def restaurant_by_id(request,id):
-    restaurant_id = request.query_params.get('id')
-    print(restaurant_id,id)
+    print(id)
     queryset = Restaurant.objects.filter(id=id)
-    serializer = RestaurantSerializer(queryset, many=True, context={'request' : request})
+    print(queryset)
+    serializer = RestaurantSerializer(queryset, many=True)
     return Response(serializer.data)

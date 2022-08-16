@@ -53,7 +53,7 @@ export default function Home({API_URL}) {
             <Col md="2">
                 {categories && <CategoryList categories={categories} change={selectChange} currentCategory={selectedCategory}/>}
             </Col>
-            {restaurants && categories && <RestaurantList restaurants={restaurants} categories={categories} />}
+            {restaurants && categories && <RestaurantList restaurants={restaurants} categories={categories} API_URL = {API_URL}/>}
         </Container>
     )
 }
