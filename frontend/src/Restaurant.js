@@ -9,20 +9,23 @@ export default function Restaurant({API_URL}) {
     const [restaurantData, setRestaurantData] = useState({})
 
     useEffect(() => {
-        axios.get(`${API_URL}/api/restaurant?id=${restaurantId}`).then(response => {
-            response = response.data[0]
-            setRestaurantData({
-                ...restaurantData, 
-                name : response.name,
-                image : response.image
-            })
+        axios.get(`${API_URL}/api/restaurant/${restaurantId}`).then(response => {
+            if(response.status === 200) {
+                console.log(response.data)
+                response = response.data[0]
+                setRestaurantData({
+                    ...restaurantData, 
+                    name : response.name,
+                    image : response.image
+                })
+            }
         })
     }, [])
 
     return (
         <Container fluid className='mt-5 px-5'>
             <h1>Restaurant - {restaurantData.name}</h1>
-            <img src={restaurantData.image} />
+            <img src={`${API_URL}${restaurantData.image}`} />
         </Container>
     )
 }

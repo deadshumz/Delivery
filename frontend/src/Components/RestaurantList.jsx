@@ -8,7 +8,7 @@ export default function RestaurantList(props) {
 
     return (
         <>
-            <Row className='px-2 mt-4'>
+            <Row className='px-2 my-4'>
                 {props.restaurants.map(restaurant => {
 
                     let restaurant_category = null

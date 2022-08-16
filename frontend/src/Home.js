@@ -12,16 +12,18 @@ export default function Home({API_URL}) {
     const [restaurants, setRestaurants] = useState(false)
     const [categories, setCategories] = useState(false)
     const [selectedCategory, setSelectedCategory] = useState("0")
+    const loadsize = 20
+    const [shownRestaurants, setShownRestaurants] = useState(loadsize)
+
 
     // Get Restaurants
     useEffect(() => {
         const searchParams = new URLSearchParams(window.location.search);
-        const url = `${API_URL}/api/restaurant_list?category=${searchParams.get('category')}`
+        const url = `${API_URL}/api/category/${searchParams.get('category')}`
         axios.get(url).then(response => {
-            setRestaurants(response.data)
+            setRestaurants(response.data.slice(0, shownRestaurants))
         })
-    }, [])
-
+    }, [shownRestaurants])
 
     // Get Categories
     useEffect(() => {
@@ -31,6 +33,16 @@ export default function Home({API_URL}) {
         })
     }, [])
 
+    // Scroll Listener
+    useEffect(() => {
+        function showMoreData() {
+            if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 5)) {
+                setShownRestaurants(shownRestaurants+loadsize)
+            }
+        }
+
+        window.addEventListener('scroll', showMoreData)
+    }, [restaurants])
 
     function selectChange(category_id) {
         const searchParams = new URLSearchParams(window.location.search);
@@ -46,14 +58,13 @@ export default function Home({API_URL}) {
         window.location.search = searchParams
     }
 
-
     return (
         <Container fluid className='mt-5 px-5'>
             <h1>Restaurants</h1>
             <Col md="2">
                 {categories && <CategoryList categories={categories} change={selectChange} currentCategory={selectedCategory}/>}
             </Col>
-            {restaurants && categories && <RestaurantList restaurants={restaurants} categories={categories} API_URL = {API_URL}/>}
+            {restaurants && categories && <RestaurantList restaurants={restaurants} categories={categories} API_URL = {API_URL}/>} 
         </Container>
     )
 }
