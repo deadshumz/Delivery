@@ -26,7 +26,7 @@ def restaurants_by_category(request, category_id):
         category = Category.objects.filter(id=category_id)[0]
         queryset = Restaurant.objects.filter(category=category)
     except:
-        queryset = Restaurant.objects
+        queryset = Restaurant.objects.all()
     serializer = RestaurantSerializer(queryset, many=True)
     return Response(serializer.data)
 

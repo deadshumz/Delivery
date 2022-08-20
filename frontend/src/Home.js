@@ -9,40 +9,33 @@ import RestaurantList from './Components/RestaurantList';
 
 export default function Home({API_URL}) {
 
-    const [restaurants, setRestaurants] = useState(false)
-    const [categories, setCategories] = useState(false)
-    const [selectedCategory, setSelectedCategory] = useState("0")
+    const [data, setData] = useState()
+    const [selectedCategory, setSelectedCategory] = useState(null)
     const loadsize = 20
     const [shownRestaurants, setShownRestaurants] = useState(loadsize)
 
-
-    // Get Restaurants
-    useEffect(() => {
+    const fetchData = () => {
         const searchParams = new URLSearchParams(window.location.search);
-        const url = `${API_URL}/api/category/${searchParams.get('category')}`
-        axios.get(url).then(response => {
-            setRestaurants(response.data.slice(0, shownRestaurants))
-        })
-    }, [shownRestaurants])
+        const restaurantURL = `${API_URL}/api/category/${searchParams.get('category')}`
+        const categoryURL = `${API_URL}/api/category`
 
-    // Get Categories
+        const getRestaurants = axios.get(restaurantURL)
+        const getCategories = axios.get(categoryURL)
+
+        axios.all([getRestaurants, getCategories]).then(
+            axios.spread((...allData) => {
+                setData({
+                    restaurants : allData[0].data,
+                    categories : allData[1].data,
+                })
+            })
+        )
+    }
+
     useEffect(() => {
-        const url = `${API_URL}/api/category`
-        axios.get(url).then(response => {
-            setCategories(response.data)
-        })
+        fetchData()
     }, [])
 
-    // Scroll Listener
-    useEffect(() => {
-        function showMoreData() {
-            if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 5)) {
-                setShownRestaurants(shownRestaurants+loadsize)
-            }
-        }
-
-        window.addEventListener('scroll', showMoreData)
-    }, [restaurants])
 
     function selectChange(category_id) {
         const searchParams = new URLSearchParams(window.location.search);
@@ -57,14 +50,18 @@ export default function Home({API_URL}) {
         }
         window.location.search = searchParams
     }
+    
 
-    return (
-        <Container fluid className='mt-5 px-5'>
-            <h1>Restaurants</h1>
-            <Col md="2">
-                {categories && <CategoryList categories={categories} change={selectChange} currentCategory={selectedCategory}/>}
-            </Col>
-            {restaurants && categories && <RestaurantList restaurants={restaurants} categories={categories} API_URL = {API_URL}/>} 
-        </Container>
-    )
+    if (data) {
+        return (
+            <Container fluid className='mt-5 px-5 bg-'>
+                <h1>Restaurants</h1>
+                <Col md="2">
+                    <CategoryList categories={data.categories} change={selectChange} currentCategory={selectedCategory}/>
+                </Col>
+                <RestaurantList restaurants={data.restaurants} categories={data.categories} API_URL = {API_URL}/>
+            </Container>
+        )
+    }
+    
 }

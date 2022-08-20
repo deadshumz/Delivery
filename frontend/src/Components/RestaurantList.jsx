@@ -5,7 +5,6 @@ import styles from './RestaurantList.module.css'
 import { Link } from 'react-router-dom'
 
 export default function RestaurantList(props) {
-
     return (
         <>
             <Row className='px-2 my-4'>

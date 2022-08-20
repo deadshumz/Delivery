@@ -5,6 +5,8 @@ export default function CategoryList({categories, change}) {
 
     const [currentCategory, setCurrentCategory] = useState("0")
 
+
+
     useEffect(() => {
         let URLParams = new URLSearchParams(window.location.search)
         if (URLParams.has('category')) {
