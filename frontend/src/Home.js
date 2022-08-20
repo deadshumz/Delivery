@@ -15,15 +15,19 @@ export default function Home({API_URL}) {
     const [shownRestaurants, setShownRestaurants] = useState(loadsize)
 
     const fetchData = () => {
+        // Creating URLSearchParams Object with initial data (current url search params as initial)
         const searchParams = new URLSearchParams(window.location.search);
+        // Setting Up API endpoints
         const restaurantURL = `${API_URL}/api/category/${searchParams.get('category')}`
         const categoryURL = `${API_URL}/api/category`
 
+        // Getting raw data
         const getRestaurants = axios.get(restaurantURL)
         const getCategories = axios.get(categoryURL)
 
         axios.all([getRestaurants, getCategories]).then(
             axios.spread((...allData) => {
+                // response data to variable
                 setData({
                     restaurants : allData[0].data,
                     categories : allData[1].data,
