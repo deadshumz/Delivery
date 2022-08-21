@@ -8,6 +8,14 @@ export default function Restaurant({API_URL}) {
     const restaurantId = useParams().id
     const [restaurantData, setRestaurantData] = useState({})
 
+    // const fetchData = () => {
+    //     const restaurantId = useParams().id
+        
+    //     const restaurantDataURL = `${API_URL}/restaurant/${restaurantId}`
+    //     const restaurantProductsURL = `${API_URL}`
+
+    // }
+
     useEffect(() => {
         axios.get(`${API_URL}/api/restaurant/${restaurantId}`).then(response => {
             if(response.status === 200) {

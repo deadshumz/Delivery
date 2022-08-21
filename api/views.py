@@ -8,22 +8,15 @@ import random
 
 @api_view(['GET'])
 def category_view(request):
-    queryset = Category.objects.all() 
-    serializer = CategorySerializer(queryset, many=True)
+    queryset = RestaurantCategory.objects.all() 
+    serializer = RestaurantCategorySerializer(queryset, many=True)
     return Response(serializer.data)
-
-
-# @api_view(['GET'])
-# def restaurant_list(request):
-#     queryset = Restaurant.objects.all()
-#     serializer = RestaurantSerializer(queryset, many=True)
-#     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def restaurants_by_category(request, category_id):
     try:
-        category = Category.objects.filter(id=category_id)[0]
+        category = RestaurantCategory.objects.filter(id=category_id)[0]
         queryset = Restaurant.objects.filter(category=category)
     except:
         queryset = Restaurant.objects.all()
@@ -32,7 +25,7 @@ def restaurants_by_category(request, category_id):
 
 
 @api_view(['GET'])
-def restaurant_by_id(request,id):
+def restaurant_by_id(request, id):
     queryset = Restaurant.objects.filter(id=id)
     serializer = RestaurantSerializer(queryset, many=True)
     return Response(serializer.data)

@@ -18,8 +18,8 @@ export default function Home({API_URL}) {
         // Creating URLSearchParams Object with initial data (current url search params as initial)
         const searchParams = new URLSearchParams(window.location.search);
         // Setting Up API endpoints
-        const restaurantURL = `${API_URL}/api/category/${searchParams.get('category')}`
-        const categoryURL = `${API_URL}/api/category`
+        const restaurantURL = `${API_URL}/api/restaurants/${searchParams.get('category')}`
+        const categoryURL = `${API_URL}/api/categories`
 
         // Getting raw data
         const getRestaurants = axios.get(restaurantURL)
@@ -60,9 +60,11 @@ export default function Home({API_URL}) {
         return (
             <Container fluid className='mt-5 px-5 bg-'>
                 <h1>Restaurants</h1>
-                <Col md="2">
-                    <CategoryList categories={data.categories} change={selectChange} currentCategory={selectedCategory}/>
-                </Col>
+                <Row>
+                    <Col md="2">
+                        <CategoryList categories={data.categories} change={selectChange} currentCategory={selectedCategory}/>
+                    </Col>
+                </Row>
                 <RestaurantList restaurants={data.restaurants} categories={data.categories} API_URL = {API_URL}/>
             </Container>
         )
