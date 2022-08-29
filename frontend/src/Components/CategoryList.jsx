@@ -1,25 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import styles from './CategoryList.module.css'
+import { ChevronDown } from 'react-bootstrap-icons';
 
 export default function CategoryList({categories, change}) {
 
-    const [currentCategory, setCurrentCategory] = useState("0")
+    const [selectedCategories, setSelectedCategories] = useState([])
+    const [popupVisible, setPopupVisible] = useState(false)
+    const categoryBtn = useRef()
 
+    const togglePopup = () => {
+        setPopupVisible(!popupVisible)
+    }
+    
 
-
-    useEffect(() => {
-        let URLParams = new URLSearchParams(window.location.search)
-        if (URLParams.has('category')) {
-            setCurrentCategory(URLParams.get('category')) 
+    const CategoryChangeHandler = (category_id) => {
+        if (selectedCategories.includes(category_id)) {
+            setSelectedCategories((selectedCategories) => selectedCategories.filter((category) => category !== category_id))
         } else {
-            setCurrentCategory("0")
+            setSelectedCategories([
+                ...selectedCategories,
+                category_id
+            ])
         }
-    }, [])
+    }
+
+    const ConfirmCategoriesHandler = () => {
+        let list_to_str = selectedCategories.join(',')
+        change(list_to_str)
+        setPopupVisible(!popupVisible)
+    }
+
 
     return (
-        <Form.Select value={currentCategory} onChange={(e) => change(e.currentTarget.value)}>
-            <option value="0">Select Category</option>
-            {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option> )}
-        </Form.Select>
+        <div className='position-relative'>
+            <div className={styles.categoryBtn} onClick={togglePopup} ref={categoryBtn}>Category <ChevronDown className='ms-1'/></div>
+            {popupVisible && <div className={styles.popup}>
+                {categories.map((category) => {
+                    return(<div key={category.id} className="mb-2">
+                        <Form.Check type='checkbox' defaultChecked={selectedCategories.includes(category.id.toString()) ? true : false} categoryid={category.id} key={category.id} onChange={(e) => CategoryChangeHandler(e.target.getAttribute('categoryid'))} inline label={category.name} className={styles.popupEl}/>
+                    </div>)})}
+                <Button variant="outline-success" onClick={ConfirmCategoriesHandler}>Confirm</Button>
+            </div>}
+        </div>
     )
 }

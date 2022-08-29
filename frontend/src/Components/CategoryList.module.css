@@ -1,0 +1,30 @@
+.categoryBtn {
+    background-color: #F6F6F6;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    position: relative;
+    user-select: none;
+}
+.categoryBtn:hover {
+    cursor: pointer;
+}
+
+.popup {
+    position: absolute;
+    width: 200%;
+    height: auto;
+    background-color: #FFFFFF;
+    border: 1px solid #E6E6E6;
+    padding: 1.5rem 1.5rem;
+    border-radius: 7px;
+    left:0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+.popupEl {
+    margin-bottom: 0.5rem;
+}
+.popupEl:last-child {
+    margin-bottom: 0;
+}

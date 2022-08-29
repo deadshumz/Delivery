@@ -10,15 +10,13 @@ import RestaurantList from './Components/RestaurantList';
 export default function Home({API_URL}) {
 
     const [data, setData] = useState()
-    const [selectedCategory, setSelectedCategory] = useState(null)
+    const [selectedCategories, setSelectedCategories] = useState('')
     const loadsize = 20
     const [shownRestaurants, setShownRestaurants] = useState(loadsize)
 
     const fetchData = () => {
-        // Creating URLSearchParams Object with initial data (current url search params as initial)
-        const searchParams = new URLSearchParams(window.location.search);
         // Setting Up API endpoints
-        const restaurantURL = `${API_URL}/api/restaurants/${searchParams.get('category')}`
+        const restaurantURL = `${API_URL}/api/restaurants/category/${selectedCategories}`
         const categoryURL = `${API_URL}/api/categories`
 
         // Getting raw data
@@ -38,33 +36,21 @@ export default function Home({API_URL}) {
 
     useEffect(() => {
         fetchData()
+    }, [selectedCategories])
+
+    useEffect(() => {
+        fetchData()
     }, [])
 
 
-    function selectChange(category_id) {
-        const searchParams = new URLSearchParams(window.location.search);
-        if (category_id === "0") {
-            searchParams.delete('category')
-        } else if (searchParams.has('category')) {
-            searchParams.set('category', category_id)
-            setSelectedCategory(category_id)
-        } else {
-            searchParams.set('category', category_id)
-            setSelectedCategory(category_id)
-        }
-        window.location.search = searchParams
-    }
-    
 
     if (data) {
         return (
             <Container fluid className='mt-5 px-5 bg-'>
                 <h1>Restaurants</h1>
-                <Row>
-                    <Col md="2">
-                        <CategoryList categories={data.categories} change={selectChange} currentCategory={selectedCategory}/>
-                    </Col>
-                </Row>
+                <div className='d-flex'>
+                    <CategoryList categories={data.categories} change={setSelectedCategories}/>
+                </div>
                 <RestaurantList restaurants={data.restaurants} categories={data.categories} API_URL = {API_URL}/>
             </Container>
         )

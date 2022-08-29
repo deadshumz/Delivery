@@ -14,12 +14,17 @@ def category_view(request):
 
 
 @api_view(['GET'])
+def restaurant_list(request):
+    queryset = Restaurant.objects.all()
+    serializer = RestaurantSerializer(queryset, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def restaurants_by_category(request, category_id):
-    try:
-        category = RestaurantCategory.objects.filter(id=category_id)[0]
-        queryset = Restaurant.objects.filter(category=category)
-    except:
-        queryset = Restaurant.objects.all()
+    id_array = category_id.split(",")
+    category = RestaurantCategory.objects.filter(id__in=id_array)
+    queryset = Restaurant.objects.filter(category__in=category)
     serializer = RestaurantSerializer(queryset, many=True)
     return Response(serializer.data)
 

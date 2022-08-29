@@ -5,7 +5,8 @@ from . import views
 
 urlpatterns = [
     path('categories', views.category_view),
-    # path('restaurant_list', views.restaurant_list),
-    path('restaurants/<str:category_id>', views.restaurants_by_category),
+    path('restaurants/category/', views.restaurant_list),
+    path('restaurants/category/<str:category_id>', views.restaurants_by_category),
     path('restaurants/<int:id>', views.restaurant_by_id),
+    # path('restaurant')
 ]
