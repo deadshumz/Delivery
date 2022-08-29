@@ -1,0 +1,10 @@
+.ShuffleButton {
+    background-color: #F6F6F6;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    position: relative;
+    user-select: none;
+}
+.ShuffleButton:hover {
+    cursor: pointer;
+}

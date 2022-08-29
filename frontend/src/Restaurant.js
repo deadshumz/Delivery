@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import styles from './css/Restaurant.module.css'
 
+
 export default function Restaurant({API_URL}) {
 
     const restaurantId = useParams().id
