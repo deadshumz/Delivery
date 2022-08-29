@@ -49,7 +49,7 @@ export default function Home({API_URL}) {
     if (data) {
         return (
             <Container fluid className='mt-5 px-5 bg-'>
-                <h1>Restaurants</h1>
+                <h1 className='mb-4'><b>Restaurants</b></h1>
                 <div className='d-flex'>
                     <ShuffleButton className='me-2' callback={dataShuffle}/>
                     <CategoryList categories={data.categories} change={setSelectedCategories}/>
